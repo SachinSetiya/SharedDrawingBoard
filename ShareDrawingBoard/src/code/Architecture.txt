@@ -1,0 +1,19 @@
+
+
+Description of the project
+
+
+Shared drying board
+
+Server
+1000 * 1000 matrix
+save and restore.
+
+will show all active connections in a select box, and user can select it.
+can create new connection.
+
+
+
+
+
+Client --> Can request Save.
