@@ -1,6 +1,8 @@
 package server;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -31,5 +33,23 @@ public class FileHelper {
 			JOptionPane.showMessageDialog(null, "Session Deleted");
 		else
 			JOptionPane.showMessageDialog(null, "Session Does not exist");
+	}
+	
+	static void createFile(String file, PaintArea pA)
+	{
+		File newFile= new File(file);
+		try {
+			newFile.createNewFile();
+			writeEmptyFile(newFile, pA);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+	
+	}
+	
+	static void writeEmptyFile(File file, PaintArea pA) throws IOException
+	{
+		FileWriter writer= new FileWriter(file);
+		System.out.println(pA);
 	}
 }

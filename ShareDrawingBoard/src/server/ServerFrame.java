@@ -16,8 +16,9 @@ import java.awt.event.ActionEvent;
 public class ServerFrame {
 
 	private JFrame frame;
-	private JTextField textField;
+	private JTextField textSessionName;
 	private JComboBox comboSessions;
+	ArrayList<PaintArea> paintAreas;
 
 	/**
 	 * Launch the application.
@@ -66,13 +67,18 @@ public class ServerFrame {
 		frame.getContentPane().add(btnConnect);
 
 		JButton btnNewSession = new JButton("New Session");
+		btnNewSession.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				createNewSession(textSessionName.getText());
+			}
+		});
 		btnNewSession.setBounds(605, 311, 155, 30);
 		frame.getContentPane().add(btnNewSession);
 
-		textField = new JTextField();
-		textField.setBounds(398, 317, 114, 19);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		textSessionName = new JTextField();
+		textSessionName.setBounds(398, 317, 114, 19);
+		frame.getContentPane().add(textSessionName);
+		textSessionName.setColumns(10);
 
 		JButton btnDeleteSession = new JButton("Delete Session");
 		btnDeleteSession.addActionListener(new ActionListener() {
@@ -122,6 +128,7 @@ public class ServerFrame {
 		for (String str : list) {
 			comboSessions.addItem(str);
 		}
+		paintAreas= new ArrayList<PaintArea>();
 	}
 
 	void connectSession() {
@@ -130,5 +137,13 @@ public class ServerFrame {
 
 	void deleteSession() {
 		FileHelper.deleteFile(FileHelper.SESSION_FOLDER +"/"+comboSessions.getSelectedItem().toString());
+		comboSessions.removeAllItems();
+		fillData();
+	}
+	
+	void createNewSession(String sessionName)
+	{
+		PaintArea pA= new PaintArea();
+		FileHelper.createFile(sessionName, pA);
 	}
 }
