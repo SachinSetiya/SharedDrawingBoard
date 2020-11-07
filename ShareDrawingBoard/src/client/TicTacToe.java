@@ -1,23 +1,19 @@
 package client;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.GregorianCalendar;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
 
 public class TicTacToe
 {
@@ -73,7 +69,7 @@ public class TicTacToe
     lblPlayer_2.setBounds(635, 104, 107, 31);
     frame.getContentPane().add(lblPlayer_2);
 
-    JPanel panel= new TicPanel();
+    JPanel panel= new TicPanel(false);
     frame.getContentPane().add(panel);
   }
 }
@@ -83,7 +79,9 @@ class TicPanel extends JPanel
   static int PANEL_HEIGHT= 300;
   static int PANEL_WIDTH= 400;
 
-  public TicPanel()
+  boolean drawCircle;
+
+  public TicPanel(boolean drawCircle)
   {
     setBorder(new LineBorder(new Color(64, 64, 64), 3));
     setBounds(175, 100, 400, 300);
@@ -91,6 +89,7 @@ class TicPanel extends JPanel
     // MAke tic tac toe lines
     MouseAdapter ma= new clickEvent();
     addMouseListener(ma);
+    this.drawCircle= drawCircle;
     //
   }
 
@@ -101,8 +100,8 @@ class TicPanel extends JPanel
     {
       // TODO Auto-generated method stub
       super.mouseClicked(e);
-      Graphics2D g= (Graphics2D)getGraphics();
-      drawCircle(g, e.getX(), e.getY());
+      Graphics2D g= (Graphics2D) getGraphics();
+      drawCircleOrCross(g, e.getX(), e.getY());
     }
   }
 
@@ -116,6 +115,7 @@ class TicPanel extends JPanel
 
   void drawGame(Graphics2D g)
   {
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g.setStroke(new BasicStroke(3));
     g.setColor(Color.blue);
     // 2 Vertical lines
@@ -126,27 +126,32 @@ class TicPanel extends JPanel
     g.drawLine(0, PANEL_HEIGHT * 2 / 3, PANEL_WIDTH, PANEL_HEIGHT * 2 / 3);
   }
 
-  void drawCircle(Graphics2D g, int x, int y)
+  void drawCircleOrCross(Graphics2D g, int x, int y)
   {
     int center_x, center_y;
-    center_x= ((x/(PANEL_WIDTH/3)) * PANEL_WIDTH/3) + PANEL_WIDTH/6;
-    center_y= ((y/(PANEL_HEIGHT/3)) * PANEL_HEIGHT/3) + PANEL_HEIGHT/6;
-  //  System.out.println(center_x +"   "+center_y);
-    drawCenterCircle(g, center_x, center_y);
-  }
-
-  void drawCross(Graphics2D g, int x, int y)
-  {
-
+    center_x= ((x / (PANEL_WIDTH / 3)) * PANEL_WIDTH / 3) + PANEL_WIDTH / 6;
+    center_y= ((y / (PANEL_HEIGHT / 3)) * PANEL_HEIGHT / 3) + PANEL_HEIGHT / 6;
+    // System.out.println(center_x +" "+center_y);
+    if (drawCircle)
+      drawCenterCircle(g, center_x, center_y);
+    else
+      drawCenterCross(g, center_x, center_y);
   }
 
   void drawCenterCircle(Graphics2D g, int center_x, int center_y)
   {
-
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g.setStroke(new BasicStroke(3));
+    g.setColor(Color.blue);
+    g.drawOval(center_x - 33, center_y - 33, 66, 66);
   }
 
   void drawCenterCross(Graphics2D g, int center_x, int center_y)
   {
-
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    g.setStroke(new BasicStroke(4));
+    g.setColor(Color.red);
+    g.drawLine(center_x - 33, center_y - 33, center_x + 33, center_y + 33);
+    g.drawLine(center_x + 33, center_y - 33, center_x - 33, center_y + 33);
   }
 }
