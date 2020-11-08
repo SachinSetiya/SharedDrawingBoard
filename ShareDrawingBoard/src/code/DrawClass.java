@@ -67,6 +67,8 @@ public class DrawClass
     panel.setBounds(202, 60, 546, 362);
     frame.getContentPane().add(panel);
   }
+
+
 }
 
 class DrawPanel extends JPanel

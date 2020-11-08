@@ -50,7 +50,6 @@ public class FileHelper
     {
       System.out.println(e);
     }
-
   }
 
   static void writeEmptyFile(File file, TicTacData pA) throws IOException

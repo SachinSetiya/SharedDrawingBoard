@@ -1,6 +1,11 @@
 package server;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -11,8 +16,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import client.TicTacToe;
 
 public class ServerFrame
 {
@@ -52,6 +57,7 @@ public class ServerFrame
   {
     initialize();
     fillData();
+    startRmi(textSessionName.getText());
   }
 
   /**
@@ -100,6 +106,8 @@ public class ServerFrame
           return;
         }
         createNewSession(textSessionName.getText(), textPlayer1Name.getText(), textPlayer2Name.getText());
+//        createNewSession("xyz", "One", "Two");
+        
       }
     });
     btnNewSession.setBounds(643, 311, 155, 30);
@@ -198,6 +206,27 @@ public class ServerFrame
   void createNewSession(String sessionName, String name1, String name2)
   {
     TicTacData data= new TicTacData(sessionName, name1, name2);
-    FileHelper.createFile(FileHelper.SESSION_FOLDER + "/" +sessionName, data);
+    FileHelper.createFile(FileHelper.SESSION_FOLDER + "/" + sessionName, data);
+    fillData();
+    TicTacToe player1= new TicTacToe(sessionName, name1, true);
+    player1.setVisible();
+    TicTacToe player2= new TicTacToe(sessionName, name2, false);
+    player2.setVisible();
+  }
+
+  void startRmi(String sessionName)
+  {
+    try
+    {
+      LocateRegistry.createRegistry(1099);
+      System.out.println("java RMI registry created. with "+sessionName);
+      NetworkGameImpl game= new NetworkGameImpl();
+      Naming.rebind("tic", game);
+    } catch (Exception e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
   }
 }
