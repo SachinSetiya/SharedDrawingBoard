@@ -57,7 +57,7 @@ public class ServerFrame
   {
     initialize();
     fillData();
-    startRmi(textSessionName.getText());
+    createRegistry();
   }
 
   /**
@@ -105,9 +105,10 @@ public class ServerFrame
           JOptionPane.showMessageDialog(null, "Player2 name is empty");
           return;
         }
+        startRmi(textSessionName.getText());
         createNewSession(textSessionName.getText(), textPlayer1Name.getText(), textPlayer2Name.getText());
 //        createNewSession("xyz", "One", "Two");
-        
+
       }
     });
     btnNewSession.setBounds(643, 311, 155, 30);
@@ -206,7 +207,7 @@ public class ServerFrame
   void createNewSession(String sessionName, String name1, String name2)
   {
     TicTacData data= new TicTacData(sessionName, name1, name2);
-    FileHelper.createFile(FileHelper.SESSION_FOLDER + "/" + sessionName, data);
+  //  FileHelper.createFile(FileHelper.SESSION_FOLDER + "/" + sessionName, data);
     fillData();
     TicTacToe player1= new TicTacToe(sessionName, name1, true);
     player1.setVisible();
@@ -218,8 +219,7 @@ public class ServerFrame
   {
     try
     {
-      LocateRegistry.createRegistry(1099);
-      System.out.println("java RMI registry created. with "+sessionName);
+      System.out.println("Created session Name " + sessionName);
       NetworkGameImpl game= new NetworkGameImpl();
       Naming.rebind("tic", game);
     } catch (Exception e)
@@ -227,6 +227,17 @@ public class ServerFrame
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+  }
 
+  void createRegistry()
+  {
+    try
+    {
+      LocateRegistry.createRegistry(1099);
+    } catch (RemoteException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 }

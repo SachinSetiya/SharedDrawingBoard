@@ -236,6 +236,11 @@ class TicPanel extends JPanel
   {
     return column * (PANEL_HEIGHT / 3) + 30;
   }
+  void calcResult()
+  {
+    //Calc Draw And Result
+    
+  }
 }
 
 class Transfer implements Runnable
