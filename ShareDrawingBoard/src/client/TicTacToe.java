@@ -99,7 +99,7 @@ public class TicTacToe
     String url= "rmi:///";
     try
     {
-      game= (server.NetworkGameInterface) Naming.lookup(url + "tic");
+      game= (server.NetworkGameInterface) Naming.lookup(url + sessionName);
       TicTacData.copy_data(data, game.getData(""));
     } catch (Exception e)
     {
@@ -235,11 +235,6 @@ class TicPanel extends JPanel
   int convertToPixelY(int column)
   {
     return column * (PANEL_HEIGHT / 3) + 30;
-  }
-  void calcResult()
-  {
-    //Calc Draw And Result
-    
   }
 }
 

@@ -18,13 +18,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import client.TicTacToe;
+import java.awt.Font;
 
 public class ServerFrame
 {
 
   private JFrame frame;
   private JTextField textSessionName;
-  private JComboBox comboSessions;
   ArrayList<TicTacData> paintAreas;
   private JTextField textPlayer1Name;
   private JTextField textPlayer2Name;
@@ -56,7 +56,7 @@ public class ServerFrame
   public ServerFrame()
   {
     initialize();
-    fillData();
+   // fillData();
     createRegistry();
   }
 
@@ -66,24 +66,9 @@ public class ServerFrame
   private void initialize()
   {
     frame= new JFrame();
-    frame.setBounds(100, 100, 962, 570);
+    frame.setBounds(100, 100, 648, 597);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.getContentPane().setLayout(null);
-
-    JLabel lblSelectSession= new JLabel("Select Session");
-    lblSelectSession.setBounds(79, 34, 133, 15);
-    frame.getContentPane().add(lblSelectSession);
-
-    JButton btnConnect= new JButton("Connect Session");
-    btnConnect.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent arg0)
-      {
-        connectSession();
-      }
-    });
-    btnConnect.setBounds(643, 69, 155, 25);
-    frame.getContentPane().add(btnConnect);
 
     JButton btnNewSession= new JButton("New Session");
     btnNewSession.addActionListener(new ActionListener()
@@ -111,104 +96,64 @@ public class ServerFrame
 
       }
     });
-    btnNewSession.setBounds(643, 311, 155, 30);
+    btnNewSession.setBounds(250, 449, 155, 30);
     frame.getContentPane().add(btnNewSession);
 
     textSessionName= new JTextField();
-    textSessionName.setBounds(398, 317, 114, 19);
+    textSessionName.setBounds(398, 159, 114, 19);
     frame.getContentPane().add(textSessionName);
     textSessionName.setColumns(10);
 
-    JButton btnDeleteSession= new JButton("Delete Session");
-    btnDeleteSession.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        deleteSession();
-      }
-    });
-    btnDeleteSession.setBounds(643, 136, 155, 25);
-    frame.getContentPane().add(btnDeleteSession);
-
-    JLabel lblOrCreateNew= new JLabel("Or Create new Session");
-    lblOrCreateNew.setBounds(79, 258, 211, 25);
+    JLabel lblOrCreateNew= new JLabel("Create new Session");
+    lblOrCreateNew.setFont(new Font("Dialog", Font.BOLD, 15));
+    lblOrCreateNew.setBounds(250, 78, 211, 25);
     frame.getContentPane().add(lblOrCreateNew);
 
-    JLabel lblActiveSessions= new JLabel("Avaliable Sessions");
-    lblActiveSessions.setBounds(187, 71, 146, 20);
-    frame.getContentPane().add(lblActiveSessions);
-
     JLabel lblEnterSessionName= new JLabel("Enter Session Name");
-    lblEnterSessionName.setBounds(129, 319, 204, 15);
+    lblEnterSessionName.setBounds(143, 159, 204, 15);
     frame.getContentPane().add(lblEnterSessionName);
 
-    comboSessions= new JComboBox();
-    // comboSessions.setModel(new DefaultComboBoxModel(new String[] {"ss", "dd"}));
-    comboSessions.setBounds(398, 73, 139, 24);
-    frame.getContentPane().add(comboSessions);
-
     JLabel lblEnterPlayerName= new JLabel("Enter Player1 Name");
-    lblEnterPlayerName.setBounds(129, 375, 204, 15);
+    lblEnterPlayerName.setBounds(143, 258, 204, 15);
     frame.getContentPane().add(lblEnterPlayerName);
 
     JLabel lblEnterPlayerName_1= new JLabel("Enter Player2 Name");
-    lblEnterPlayerName_1.setBounds(129, 445, 204, 15);
+    lblEnterPlayerName_1.setBounds(143, 359, 204, 15);
     frame.getContentPane().add(lblEnterPlayerName_1);
 
     textPlayer1Name= new JTextField();
     textPlayer1Name.setColumns(10);
-    textPlayer1Name.setBounds(398, 373, 114, 19);
+    textPlayer1Name.setBounds(398, 256, 114, 19);
     frame.getContentPane().add(textPlayer1Name);
 
     textPlayer2Name= new JTextField();
     textPlayer2Name.setColumns(10);
-    textPlayer2Name.setBounds(398, 425, 114, 19);
+    textPlayer2Name.setBounds(398, 357, 114, 19);
     frame.getContentPane().add(textPlayer2Name);
 
     JMenuBar menuBar= new JMenuBar();
     frame.setJMenuBar(menuBar);
-
-    JMenu mnFile= new JMenu("File");
-    menuBar.add(mnFile);
-
-    JMenu mnSave= new JMenu("Save All Sessions");
-    mnFile.add(mnSave);
-
-    JMenu mnReset= new JMenu("Reset");
-    mnFile.add(mnReset);
   }
 
   /**
    * Function used for filling data
    */
-  void fillData()
-  {
-    // Fill comboSessions
-    ArrayList<String> list= FileHelper.fileNames(FileHelper.SESSION_FOLDER);
-    for (String str : list)
-    {
-      comboSessions.addItem(str);
-    }
-    paintAreas= new ArrayList<TicTacData>();
-  }
-
-  void connectSession()
-  {
-    System.out.println(comboSessions.getSelectedItem());
-  }
-
-  void deleteSession()
-  {
-    FileHelper.deleteFile(FileHelper.SESSION_FOLDER + "/" + comboSessions.getSelectedItem().toString());
-    comboSessions.removeAllItems();
-    fillData();
-  }
+//  void fillData()
+//  {
+//    // Fill comboSessions
+//    ArrayList<String> list= FileHelper.fileNames(FileHelper.SESSION_FOLDER);
+//    for (String str : list)
+//    {
+//      comboSessions.addItem(str);
+//    }
+//    paintAreas= new ArrayList<TicTacData>();
+//  }
 
   void createNewSession(String sessionName, String name1, String name2)
   {
     TicTacData data= new TicTacData(sessionName, name1, name2);
   //  FileHelper.createFile(FileHelper.SESSION_FOLDER + "/" + sessionName, data);
-    fillData();
+//    fillData();
     TicTacToe player1= new TicTacToe(sessionName, name1, true);
     player1.setVisible();
     TicTacToe player2= new TicTacToe(sessionName, name2, false);
@@ -221,7 +166,7 @@ public class ServerFrame
     {
       System.out.println("Created session Name " + sessionName);
       NetworkGameImpl game= new NetworkGameImpl();
-      Naming.rebind("tic", game);
+      Naming.rebind(sessionName, game);
     } catch (Exception e)
     {
       // TODO Auto-generated catch block
